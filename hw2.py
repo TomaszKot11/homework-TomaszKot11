@@ -39,9 +39,15 @@ def countries_with_no_deaths_count(date: datetime.date) -> int:
     :param date: Date object of the date to get the results for
     :return: Number of countries with no deaths but with active cases on a given date as an integer
     """
-    
-    # Your code goes here
-    pass
+
+    date1 = format_date(date)
+    confirmed_cases = dfC[dfC[date1] != 0] 
+    confirmed_index = [index for index in confirmed_cases.index]
+    deaths = dfD[dfD[date1] == 0] 
+    deaths_index = [index for index in deaths.index]
+    number = len(set(confirmed_index) & set(deaths_index))
+    return number
+
 
 
 def more_cured_than_deaths_indices(date: datetime.date) -> List[int]:
@@ -65,5 +71,12 @@ def more_cured_than_deaths_indices(date: datetime.date) -> List[int]:
     :return: A List of integers containing indices of countries which had more cured cases than deaths on a given date
     """
     
-    # Your code goes here
-    pass
+    date2 = format_date(date)
+    index = 0
+    table = []
+    for cured, dead in zip(dfR[date2], dfD[date2]):
+        if int(cured) > int(dead):
+            table.append(index)
+        index += 1
+    return table
+
