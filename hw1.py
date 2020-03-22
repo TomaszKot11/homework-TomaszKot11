@@ -1,6 +1,7 @@
 from typing import List
 
 import pandas as pd
+from datetime import datetime, timedelta
 
 CONFIRMED_CASES_URL = f"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data" \
                       f"/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv "
@@ -63,6 +64,10 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     :param year: Month to get the countries for as an integer indexed from 1
     :return: Number of countries/regions where the count has not changed in a day
     """
+    # date operations and preparation
+    previous_day = datetime(year, month, day) - timedelta(days=1)
+    previous_day_str = f"{previous_day.month}/{previous_day.day}/20"
+    current_day_str = f"{month}/{day}/20"
+
+    return len(confirmed_cases.loc[confirmed_cases[current_day_str]-confirmed_cases[previous_day_str]!=0].index)
     
-    # Your code goes here (remove pass)
-    pass
