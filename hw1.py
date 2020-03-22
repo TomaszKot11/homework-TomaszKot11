@@ -28,7 +28,11 @@ def poland_cases_by_date(day: int, month: int, year: int = 2020) -> int:
     :param month: Month to get the cases for as an integer indexed from 1
     :return: Number of cases on a given date as an integer
     """
-    return confirmed_cases.loc[confirmed_cases["Country/Region"]=="Poland"][f"{month}/{day}/20"].values[0]
+    d = datetime.date(year, month, day)
+    data = d.strftime('%m/%d/%y').lstrip("0").replace(" 0", " ").replace("/0", "/")
+    inpoland = confirmed_cases.loc[confirmed_cases["Country/Region"]=="Poland"]
+    result = inpoland[data].values[0]
+    return result
 
 
 def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
