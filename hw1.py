@@ -46,8 +46,10 @@ def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
     :param year: Month to get the countries for as an integer indexed from 1
     :return: A list of strings with the names of the coutires
     """
-    return confirmed_cases.groupby(by="Country/Region").sum().sort_values(by=f"{month}/{day}/20", ascending=False).head(5).index.values
-
+    d = datetime.date(year, month, day)
+    d1 = d.strftime('%m/%d/%y').lstrip("0").replace(" 0", " ").replace("/0", "/")
+    countries = confirmed_cases[["Country/Region", d1]].groupby(["Country/Region"]).sum().sort_values(by=d1, ascending=False).head(5)
+    return list(countries.index)
 
 def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
